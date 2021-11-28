@@ -1,5 +1,5 @@
 # BlenderCreateFolderStructure
-Simple addon to create a folder structure in Blender.
+Simple Add-on to create a folder structure in Blender.
 
 ### Installation
 1. Download BlenderCreateFolderStructure.py
