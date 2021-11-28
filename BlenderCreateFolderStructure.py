@@ -11,7 +11,7 @@ bl_info = {
     "category": "Development"
 }
 
-### IMPORTS
+
 import os
 import bpy
 import bpy_extras
@@ -78,7 +78,6 @@ class CreateFolderStructure(bpy.types.Operator, bpy_extras.io_utils.ExportHelper
         open(os.path.join(self.filepath, os.path.basename(self.filepath)+'.blend'), 'a').close()
         open(os.path.join(self.filepath, os.path.basename(self.filepath)+'.fbx'), 'a').close()
 
-
     def reference_structure(self):
         os.mkdir(os.path.join(self.filepath, str(self.index).zfill(2)+' References'))
         self.index += 1
@@ -101,19 +100,15 @@ class CreateFolderStructure(bpy.types.Operator, bpy_extras.io_utils.ExportHelper
     def geometry_structure(self):
         geometry_path = os.path.join(self.filepath, str(self.index).zfill(2)+' Geometry')
         os.mkdir(geometry_path)
-
         open(os.path.join(geometry_path, ' - Contains a blender and zbrush file for low and high poly models - '), 'a').close()
         open(os.path.join(geometry_path, 'Geometry.blend'), 'a').close()
         open(os.path.join(geometry_path, 'Geometry.zpr'), 'a').close()
-
         os.mkdir(os.path.join(geometry_path, 'BaseMeshes'))
         open(os.path.join(geometry_path, 'BaseMeshes', '- Contains all base meshes, you need to model or sculpt -'), 'a').close()
         open(os.path.join(geometry_path, 'BaseMeshes', 'MeshNameBase.fbx'), 'a').close()
-
         os.mkdir(os.path.join(geometry_path, 'HighPoly'))
         open(os.path.join(geometry_path, 'HighPoly', '- Contains the high poly fbx files for texture baking -'), 'a').close()
         open(os.path.join(geometry_path, 'HighPoly', 'MeshName_high.fbx'), 'a').close()
-
         self.index += 1
 
     def texture_structure(self):
@@ -186,17 +181,21 @@ class CreateFolderStructure(bpy.types.Operator, bpy_extras.io_utils.ExportHelper
         open(os.path.join(path, ' - Contains temporary files which can be deleted - '), 'a').close()
         self.index += 1
 
+
 def menu_func(self, context):
     self.layout.separator()
     self.layout.operator(CreateFolderStructure.bl_idname)
+
 
 def register():
     bpy.types.TOPBAR_MT_file.append(menu_func)
     bpy.utils.register_class(CreateFolderStructure)
 
+
 def unregister():
     bpy.utils.unregister_class(CreateFolderStructure)
     bpy.types.TOPBAR_MT_file.remove(menu_func)
+
 
 if __name__ == "__main__":
     register()
