@@ -67,26 +67,30 @@ class CreateFolderStructure(bpy.types.Operator, bpy_extras.io_utils.ExportHelper
             os.mkdir(os.path.join(self.filepath, 'Masks'))
 
         if self.structure_type == 'Character':
-            open(os.path.join(self.filepath, 'Character'), 'a').close()
             os.mkdir(os.path.join(self.filepath, 'Animations'))
+            open(os.path.join(self.filepath, 'Animations', os.path.basename(self.filepath)+'AnimationName'), 'a').close()
             os.mkdir(os.path.join(self.filepath, 'Geometry'))
             os.mkdir(os.path.join(self.filepath, 'Geometry', 'BaseMeshes'))
+            open(os.path.join(self.filepath, 'Geometry', 'BaseMeshes', 'MeshNameBaseMesh'), 'a').close()
             os.mkdir(os.path.join(self.filepath, 'Geometry', 'Blendshapes'))
+            open(os.path.join(self.filepath, 'Geometry', 'Blendshapes', 'MeshNameBlendshapeName'), 'a').close()
             os.mkdir(os.path.join(self.filepath, 'Geometry', 'HighPoly'))
+            open(os.path.join(self.filepath, 'Geometry', 'HighPoly', 'MeshName_high'), 'a').close()
             os.mkdir(os.path.join(self.filepath, 'Geometry', 'TexturingBase'))
+            open(os.path.join(self.filepath, 'Geometry', 'TexturingBase', os.path.basename(self.filepath)+'TexturingBase'), 'a').close()
             os.mkdir(os.path.join(self.filepath, 'Rig'))
+            open(os.path.join(self.filepath, 'Rig', os.path.basename(self.filepath)+'Rig'), 'a').close()
             os.mkdir(os.path.join(self.filepath, 'Texture'))
+            open(os.path.join(self.filepath, 'Texture', os.path.basename(self.filepath)+'DiffuseNormalAORoughnessMetallic'), 'a').close()
             os.mkdir(os.path.join(self.filepath, 'Maps'))
             os.mkdir(os.path.join(self.filepath, 'Masks'))
 
         if self.structure_type == 'Scene':
-            open(os.path.join(self.filepath, 'Scene'), 'a').close()
             os.mkdir(os.path.join(self.filepath, 'Maps'))
             os.mkdir(os.path.join(self.filepath, 'Masks'))
             os.mkdir(os.path.join(self.filepath, 'Simulations'))
 
         if self.structure_type == 'Project':
-            open(os.path.join(self.filepath, 'Project'), 'a').close()
             os.mkdir(os.path.join(self.filepath, 'Research'))
             os.mkdir(os.path.join(self.filepath, 'Research', 'Experiments'))
             os.mkdir(os.path.join(self.filepath, 'Research', 'Scripts'))
