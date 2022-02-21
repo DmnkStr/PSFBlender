@@ -1,5 +1,5 @@
 bl_info = {
-    "name": "Create Folder Structure",
+    "name": "Creates Folder Structure",
     "description": "A simple tool to genereate a folder structure",
     "author": "Dominik Strasser ",
     "version": (1, 0, 0),
@@ -32,26 +32,27 @@ class CreateFolderStructure(bpy.types.Operator, bpy_extras.io_utils.ExportHelper
       items=(('Assets', "Asset", ""),
             ('Project', "Project", ""),
             ),
-        default='Asset',
+        default='Assets',
       )
 
   def execute(self, context):
+    self.structure_name = os.path.basename(self.filepath)
     self.asset_structure = {
       f'{self.filepath}': {
         '01 Reference': {},
         '02 Geometry': {
           'BaseMesh': {},
           'HighPoly': {
-            f'{self.filepath}_high.fbx': {},
+            f'{self.structure_name}_high.fbx': {},
           }
         },
         '03 Texture': {
-          f'{self.filepath}Color.png': {},
-          f'{self.filepath}Roughness.png': {},
-          f'{self.filepath}Normal.png': {},
+          f'{self.structure_name}Color.png': {},
+          f'{self.structure_name}Roughness.png': {},
+          f'{self.structure_name}Normal.png': {},
         },
         '04 Animation': {
-          f'{self.filepath}AnimationName.fbx': {},
+          f'{self.structure_name}AnimationName.fbx': {},
         },
         '05 Simulation': {
           'Cache': {},
@@ -61,9 +62,9 @@ class CreateFolderStructure(bpy.types.Operator, bpy_extras.io_utils.ExportHelper
         '08 Documentation': {},
         '09 Autosaves': {},
         '10 Trash': {},
-        f'{self.filepath}.blend': {},
-        f'{self.filepath}.ZPR': {},
-        f'{self.filepath}.spp': {},
+        f'{self.structure_name}.blend': {},
+        f'{self.structure_name}.ZPR': {},
+        f'{self.structure_name}.spp': {},
       }
     }
 
@@ -73,6 +74,7 @@ class CreateFolderStructure(bpy.types.Operator, bpy_extras.io_utils.ExportHelper
 
   def create_structure(self, struct, path):
     for folder in struct:
+      print(os.path.join(path, folder))
       if '.' in folder:
         open( os.path.join(path, folder), 'a' ).close()
       else:
