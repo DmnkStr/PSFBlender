@@ -19,167 +19,69 @@ from bpy.props import EnumProperty
 
 
 class CreateFolderStructure(bpy.types.Operator, bpy_extras.io_utils.ExportHelper):
-    """Create Folder Structure"""
-    bl_idname = "wm.create_folder_structure"
-    bl_label = "Create Folder Structure"
+  """Create Folder Structure"""
+  bl_idname = "wm.create_folder_structure"
+  bl_label = "Create Folder Structure"
  
-    filename_ext = ""
+  filename_ext = ""
 
-    index = 0
+  index = 1
 
-    structure_type: EnumProperty(
-            name="Structure Type",
-            items=(('Prop', "Prop", ""),
-                   ('Character', "Character", ""),
-                   ('Environment', "Environment", ""),
-                   ('Project', "Project", ""),
-                   ),
-            default='Prop',
-            )
+  structure_type: EnumProperty(
+    name="Structure Type",
+      items=(('Assets', "Asset", ""),
+            ('Project', "Project", ""),
+            ),
+        default='Asset',
+      )
 
-    def execute(self, context):
+  def execute(self, context):
+    self.asset_structure = {
+      f'{self.filepath}': {
+        '01 Reference': {},
+        '02 Geometry': {
+          'BaseMesh': {},
+          'HighPoly': {
+            f'{self.filepath}_high.fbx': {},
+          }
+        },
+        '03 Texture': {
+          f'{self.filepath}Color.png': {},
+          f'{self.filepath}Roughness.png': {},
+          f'{self.filepath}Normal.png': {},
+        },
+        '04 Animation': {
+          f'{self.filepath}AnimationName.fbx': {},
+        },
+        '05 Simulation': {
+          'Cache': {},
+        },
+        '06 Audio': {},
+        '07 Render': {},
+        '08 Documentation': {},
+        '09 Autosaves': {},
+        '10 Trash': {},
+        f'{self.filepath}.blend': {},
+        f'{self.filepath}.ZPR': {},
+        f'{self.filepath}.spp': {},
+      }
+    }
 
-        self.base_structure()
+    self.create_structure(self.asset_structure, '')
 
-        if self.structure_type == 'Prop':
-            self.reference_structure()
-            self.geometry_structure()
-            self.texture_structure()
-            self.rig_structure()
-            self.animation_structure()
-            self.audio_structure()
+    return {'FINISHED'}
 
-        if self.structure_type == 'Character':
-            self.reference_structure()
-            self.geometry_structure()
-            self.texture_structure()
-            self.rig_structure()
-            self.animation_structure()
-            self.audio_structure()
-
-        if self.structure_type == 'Environment':
-            self.simulation_structure()
-            self.audio_structure()
-
-        if self.structure_type == 'Project':
-            self.props_structure()
-            self.characters_structure()
-            self.environment_structure()
-
-        self.rendering_structure()
-        self.documentation_structure()
-        self.autosave_structure()
-        self.trash_structure()
-        
-        return {'FINISHED'}
-
-    def base_structure(self):
-        os.mkdir(self.filepath)
-        open(os.path.join(self.filepath, os.path.basename(self.filepath)+'.blend'), 'a').close()
-        open(os.path.join(self.filepath, os.path.basename(self.filepath)+'.fbx'), 'a').close()
-
-    def reference_structure(self):
-        os.mkdir(os.path.join(self.filepath, str(self.index).zfill(2)+' References'))
-        self.index += 1
-
-    def props_structure(self):
-        os.mkdir(os.path.join(self.filepath, str(self.index).zfill(2)+' Props'))
-        open(os.path.join(self.filepath, ' - Create prop folder structures in here - '), 'a').close()
-        self.index += 1
-
-    def characters_structure(self):
-        os.mkdir(os.path.join(self.filepath, str(self.index).zfill(2)+' Characters'))
-        open(os.path.join(self.filepath, ' - Create character folder structures in here - '), 'a').close()
-        self.index += 1
-
-    def environment_structure(self):
-        os.mkdir(os.path.join(self.filepath, str(self.index).zfill(2)+' Environment'))
-        open(os.path.join(self.filepath, ' - Create environment folder structures in here - '), 'a').close()
-        self.index += 1
-
-    def geometry_structure(self):
-        geometry_path = os.path.join(self.filepath, str(self.index).zfill(2)+' Geometry')
-        os.mkdir(geometry_path)
-        open(os.path.join(geometry_path, ' - Contains a blender and zbrush file for low and high poly models - '), 'a').close()
-        open(os.path.join(geometry_path, 'Geometry.blend'), 'a').close()
-        open(os.path.join(geometry_path, 'Geometry.zpr'), 'a').close()
-        os.mkdir(os.path.join(geometry_path, 'BaseMeshes'))
-        open(os.path.join(geometry_path, 'BaseMeshes', '- Contains all base meshes, you need to model or sculpt -'), 'a').close()
-        open(os.path.join(geometry_path, 'BaseMeshes', 'MeshNameBase.fbx'), 'a').close()
-        os.mkdir(os.path.join(geometry_path, 'HighPoly'))
-        open(os.path.join(geometry_path, 'HighPoly', '- Contains the high poly fbx files for texture baking -'), 'a').close()
-        open(os.path.join(geometry_path, 'HighPoly', 'MeshName_high.fbx'), 'a').close()
-        self.index += 1
-
-    def texture_structure(self):
-        texture_path = os.path.join(self.filepath, str(self.index).zfill(2)+' Texture')
-        os.mkdir(texture_path)
-        open(os.path.join(texture_path, ' - Contains a substance painter file and folders with exported texture sets - '), 'a').close()
-        open(os.path.join(texture_path, 'Texture.blend'), 'a').close()
-        open(os.path.join(texture_path, os.path.basename(self.filepath)+'.spp'), 'a').close()
-        self.index += 1
-
-    def rig_structure(self):
-        rig_path = os.path.join(self.filepath, str(self.index).zfill(2)+' Rig')
-        os.mkdir(rig_path)
-        open(os.path.join(rig_path, ' - Contains the rigged model - '), 'a').close()
-        open(os.path.join(rig_path, 'Rig.blend'), 'a').close()
-        self.index += 1
-
-    def animation_structure(self):
-        animation_path = os.path.join(self.filepath, str(self.index).zfill(2)+' Animation')
-        os.mkdir(animation_path)
-        open(os.path.join(animation_path, ' - Contains one blender file with all animations and all animations exported as fbx files - '), 'a').close()
-        open(os.path.join(animation_path, 'Animation.blend'), 'a').close()
-        open(os.path.join(animation_path, 'AnimationName.fbx'), 'a').close()
-        self.index += 1
-
-    def simulation_structure(self):
-        simulation_path = os.path.join(self.filepath, str(self.index).zfill(2)+' Simulation')
-        os.mkdir(simulation_path)
-        open(os.path.join(simulation_path, ' - Contains blender files with the simulations and a cache folder with cached simulations - '), 'a').close()
-        open(os.path.join(simulation_path, 'SimulationName.blend'), 'a').close()
-        os.mkdir(os.path.join(simulation_path, 'Cache'))
-        open(os.path.join(simulation_path,'Cache' , ' - Contains folders with cached simulations - '), 'a').close()
-        self.index += 1
-
-    def rendering_structure(self):
-        render_path = os.path.join(self.filepath, str(self.index).zfill(2)+' Render')
-        os.mkdir(render_path)
-        open(os.path.join(render_path, 'RenderName.blend'), 'a').close()
-        open(os.path.join(render_path, ' - Contains blender files to render and folders with rendered images - '), 'a').close()
-        self.index += 1
-
-    def audio_structure(self):
-        path = os.path.join(self.filepath, str(self.index).zfill(2)+' Audio')
-        os.mkdir(path)
-        open(os.path.join(path, ' - Contains audio files - '), 'a').close()
-        self.index += 1
-
-    def documentation_structure(self):
-        path = os.path.join(self.filepath, str(self.index).zfill(2)+' Documentation')
-        os.mkdir(path)
-        open(os.path.join(path, ' - Contains screenshots, gifs and other forms of documentation - '), 'a').close()
-        self.index += 1
-
-    def research_structure(self):
-        research_path = os.path.join(self.filepath, 'Research')
-        os.mkdir(os.path.join(self.filepath, 'Research'))
-        os.mkdir(os.path.join(self.filepath, 'Research', 'Experiments'))
-        os.mkdir(os.path.join(self.filepath, 'Research', 'Scripts'))
-        self.index += 1
-
-    def autosave_structure(self):
-        path = os.path.join(self.filepath, str(self.index).zfill(2)+' Autosave')
-        os.mkdir(path)
-        open(os.path.join(path, ' - Contains autosaves - '), 'a').close()
-        self.index += 1
-
-    def trash_structure(self):
-        path = os.path.join(self.filepath, str(self.index).zfill(2)+' Autosave')
-        os.mkdir(path)
-        open(os.path.join(path, ' - Contains temporary files which can be deleted - '), 'a').close()
-        self.index += 1
+  def create_structure(self, struct, path):
+    for folder in struct:
+      if '.' in folder:
+        open( os.path.join(path, folder), 'a' ).close()
+      else:
+        os.mkdir(os.path.join(path, folder))
+      try:
+        self.create_structure(struct.get(folder), os.path.join(path, folder))
+      except:
+        return
+    
 
 
 def menu_func(self, context):
