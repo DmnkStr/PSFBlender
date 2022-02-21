@@ -1,5 +1,5 @@
-# BlenderCreateFolderStructure
-Simple Add-on to create a folder structure in Blender.
+# PSFBlender
+Project Folder Structure For Blender
 
 ### Installation
 1. Download BlenderCreateFolderStructure.py
