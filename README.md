@@ -2,7 +2,7 @@
 Project Folder Structure For Blender
 
 ### Installation
-1. Download BlenderCreateFolderStructure.py
+1. Download PSFBlender.py
 2. Open Blender
 3. Go to Edit > Preferences > Add-ons > Install...
 4. Choose PSFBlender.py
