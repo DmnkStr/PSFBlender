@@ -16,16 +16,16 @@ Project Folder Structure For Blender
 Code:
 ```
 bl_info = {
-    "name": "Creates Folder Structure",
-    "description": "A simple tool to genereate a folder structure",
+    "name": "PSFBlender",
+    "description": "Project file structures for Blender",
     "author": "Dominik Strasser ",
     "version": (1, 0, 0),
     "blender": (2, 93, 0),
-    "location": "File > Create Folder Structure",
+    "location": "File > Create File Structure",
     "warning": "",
     "wiki_url": "",
     "tracker_url": "",
-    "category": "Development"
+    "category": "User"
 }
 
 
